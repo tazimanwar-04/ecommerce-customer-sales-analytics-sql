@@ -172,4 +172,5 @@ str_to_date(order_delivered_customer_date, '%Y-%m-%d %H:%i:%s'),
 str_to_date(order_estimated_delivery_date, '%Y-%m-%d %H:%i:%s')
 )), 2) as avg_delay_days
 from olist_orders
+
 where order_status = 'delivered';
