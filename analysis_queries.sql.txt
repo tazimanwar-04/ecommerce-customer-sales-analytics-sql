@@ -1,0 +1,175 @@
+
+-- total orders
+select count(*) as total_orders
+from olist_orders;
+
+-- total customers
+select count(distinct customer_unique_id) as total_customers
+from olist_customer;
+
+-- total revenue
+select round(sum(price), 2) as total_revenue
+from olist_order_items;
+
+-- Average Order value
+select
+round(sum(oi.price)/ count(distinct o.order_id), 2) as avg_order_value
+from olist_orders o
+join olist_order_items oi
+on o.order_id = oi.order_id;
+
+-- order by status
+select order_status,
+count(*) as order_count
+from olist_orders
+group by order_status
+order by order_count desc;
+
+select count(*) from olist_customer;
+select count(distinct customer_unique_id) as total_customers
+from olist_customer;
+
+select
+count(*) as total_orders,
+count(*) as technical_customers,
+count(distinct customer_unique_id) as real_customers
+from olist_orders o
+join olist_customer c
+on o.customer_id = c.customer_id;
+
+-- total revenue
+select round(sum(price), 2) as total_revenue
+from olist_order_items;
+
+-- average orderr value
+select round(sum(oi.price)/ count(distinct o.order_id), 2) as avg_order_value
+from olist_orders o 
+join olist_order_items oi
+on o.order_id = oi.order_id;
+
+-- Hidden Insight
+select
+round(count(*) / count(distinct order_id), 2) as avg_items_per_order
+from olist_order_items;
+
+-- order by status
+select order_status,
+count(*) as order_count
+from olist_orders
+group by order_status
+order by order_count desc;
+
+-- revenue by product category
+SELECT 
+    IFNULL(p.product_category_name, 'Unknown') AS category,
+    ROUND(SUM(oi.price), 2) AS category_revenue
+FROM olist_order_items oi
+JOIN olist_products p
+    ON oi.product_id = p.product_id
+GROUP BY category
+ORDER BY category_revenue DESC;
+
+
+-- Top selling products
+select
+oi.product_id,
+round(sum(oi.price), 2) as product_revenue
+from olist_order_items oi
+group by oi.product_id
+order by product_revenue desc
+limit 10;
+
+-- revenue by customer state
+select c.customer_state,
+round(sum(oi.price), 2) as state_revenue
+from olist_order_items oi
+join olist_orders o
+on oi.order_id = o.order_id
+join olist_customer c
+on o.customer_id = c.customer_id
+group by c.customer_state
+order by state_revenue desc;
+
+-- monthly revenue trend
+SELECT 
+    DATE_FORMAT(
+        STR_TO_DATE(o.order_purchase_timestamp, '%Y-%m-%d %H:%i:%s'),
+        '%Y-%m'
+    ) AS order_month,
+    ROUND(SUM(oi.price), 2) AS monthly_revenue
+FROM olist_orders o
+JOIN olist_order_items oi
+    ON o.order_id = oi.order_id
+GROUP BY order_month
+ORDER BY order_month;
+
+
+-- count orders per real customer
+with customer_orders as (
+select
+c.customer_unique_id,
+count(o.order_id) as total_orders
+from olist_orders o
+join olist_customer c
+on o.customer_id = c.customer_id
+group by c.customer_unique_id
+)
+select case when total_orders = 1 then 'New Customer'
+else 'Repeat Customer'
+end as customer_type,
+count(*) as customer_count
+from customer_orders
+group by customer_type;
+
+-- customer lifetime value(clv)
+select
+c.customer_unique_id,
+round(sum(oi.price), 2) as customer_lifetime_value
+from olist_orders o
+join olist_order_items oi
+on o.order_id = oi.order_id
+join olist_customer c
+on o.customer_id = c.customer_id
+group by c.customer_unique_id
+order by customer_lifetime_value desc
+limit 10;
+
+-- top N product per category(window function)
+select * 
+from (
+select p.product_category_name,
+oi.product_id,
+sum(oi.price) as product_revenue,
+rank() over (
+partition by p.product_category_name
+order by sum(oi.price) desc
+) as revenue_rank
+from olist_order_items oi
+join olist_products p 
+on oi.product_id = p.product_id
+group by p.product_category_name, oi.product_id
+) ranked_products
+where revenue_rank <= 3;
+
+-- revenue ranking state
+select 
+c.customer_state,
+round(sum(oi.price), 2) as state_revenue,
+rank() over (
+order by sum(oi.price) desc
+) as revenue_rank
+from olist_order_items oi
+join olist_orders o
+on oi.order_id = o.order_id
+join olist_customer c
+on o.customer_id = c.customer_id
+group by c.customer_state;
+
+-- Delivery Delay Aanalysis
+select
+round(avg(datediff(
+str_to_date(order_delivered_customer_date, '%Y-%m-%d %H:%i:%s'),
+str_to_date(order_estimated_delivery_date, '%Y-%m-%d %H:%i:%s')
+)), 2) as avg_delay_days
+from olist_orders
+where order_status = 'delivered';
