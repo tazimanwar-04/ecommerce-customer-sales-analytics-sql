@@ -108,7 +108,7 @@ Brazilian Olist E-Commerce Dataset (Kaggle)
 
 ---
 
-## 🛠 SQL Techniques Used
+##  SQL Techniques Used
 
 - `JOIN`
 - `GROUP BY`
