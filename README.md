@@ -1,6 +1,6 @@
-# 📊 E-Commerce Customer & Sales Analytics using SQL
+#  E-Commerce Customer & Sales Analytics using SQL
 
-## 📌 Project Overview
+##  Project Overview
 
 This project analyzes the Brazilian Olist E-Commerce dataset using MySQL to simulate real-world business analytics.
 
@@ -8,7 +8,7 @@ The objective was to design a relational database from raw CSV files, perform SQ
 
 ---
 
-## 🎯 Project Objectives
+##  Project Objectives
 
 - Design a clean relational database schema
 - Implement Primary & Foreign Key relationships
@@ -20,7 +20,7 @@ The objective was to design a relational database from raw CSV files, perform SQ
 
 ---
 
-## 🗂 Dataset Information
+##  Dataset Information
 
 **Dataset Source:**  
 Brazilian Olist E-Commerce Dataset (Kaggle)
@@ -39,7 +39,7 @@ Brazilian Olist E-Commerce Dataset (Kaggle)
 
 ---
 
-## 🧱 Database Design
+##  Database Design
 
 - Designed relational schema using MySQL
 - Implemented Primary Keys (PK)
@@ -48,38 +48,38 @@ Brazilian Olist E-Commerce Dataset (Kaggle)
 - Validated null values and data integrity
 - Reverse engineered schema into ERD
 
-📌 ERD diagram included in repository (`ERD.png`)
+ ERD diagram included in repository (`ERD.png`)
 
 ---
 
-## 📈 Key Business Analysis Performed
+##  Key Business Analysis Performed
 
-### 1️⃣ Revenue Analysis
+### 1️ Revenue Analysis
 - Total Revenue Calculation
 - Average Order Value (AOV)
 - Monthly Revenue Trend
 
-### 2️⃣ Product & Category Analysis
+### 2 Product & Category Analysis
 - Revenue by Product Category
 - Top Products per Category (using Window Functions)
 - Revenue Distribution Analysis
 
-### 3️⃣ Customer Analytics
+### 3️ Customer Analytics
 - Repeat vs New Customer Segmentation
 - Customer Lifetime Value (CLV)
 - Purchase Behavior Insights
 
-### 4️⃣ Geographic Analysis
+### 4️ Geographic Analysis
 - Revenue by State
 - Revenue Ranking using `RANK()`
 
-### 5️⃣ Operational Analysis
+### 5️ Operational Analysis
 - Delivery Delay Analysis
 - Performance vs Estimated Delivery Dates
 
 ---
 
-## 📊 Key Business Insights
+##  Key Business Insights
 
 ### Revenue & Growth
 - Total Revenue: 13.59M
@@ -121,5 +121,5 @@ Brazilian Olist E-Commerce Dataset (Kaggle)
 
 ---
 
-## 📂 Repository Structure
+##  Repository Structure
 
